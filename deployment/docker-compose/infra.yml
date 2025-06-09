@@ -1,0 +1,25 @@
+version: "3.8"
+name: "bookstore E commerce APP"
+
+services:
+  catalog-db:
+    image: postgres:16-alpine
+    container_name: catalog-db
+    environment:
+    - POSTGRES_DB=bookstore
+    - POSTGRES_USER=bookstore
+    - POSTGRES_PASSWORD=bookstore123
+    ports:
+    - "15432:5432"
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U bookstore" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+        reservations:
+          memory: 500M

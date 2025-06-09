@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<springdoc-openapi.version>2.8.8</springdoc-openapi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,13 +57,22 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
@@ -114,6 +124,34 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin> -->
+			            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
+                <configuration>
+                    <java>
+                        <importOrder/>
+                        <removeUnusedImports/>
+                        <googleJavaFormat>
+                            <version>1.21.0
+                            </version>                      <!-- optional, 1.8 is the minimum supported version for Java 11 -->
+                            <style>GOOGLE</style>                       <!-- or AOSP (optional) -->
+                            <reflowLongStrings>true</reflowLongStrings> <!-- optional -->
+                            <formatJavadoc>false</formatJavadoc>        <!-- optional -->
+                            <!-- optional: custom group artifact (you probably don't need this) -->
+                            <groupArtifact>com.google.googlejavaformat:google-java-format</groupArtifact>
+                        </googleJavaFormat>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -125,12 +163,29 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 
 			<plugin>
 				<groupId>io.github.git-commit-id</groupId>
     			<artifactId>git-commit-id-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision
+							</goal>
+						</goals>
+						<configuration>
+							<failOnNoGitDirectory>false</failOnNoGitDirectory>
+							<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<includeOnlyProperties>
+							<includeOnlyProperty>^git.branch$</includeOnlyProperty>
+							<includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+							<includeOnlyProperty>^git.commit.user.name$</includeOnlyProperty>
+							<includeOnlyProperty>^git.commit.message.full$</includeOnlyProperty>
+							</includeOnlyProperties>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
-			-->
 		</plugins>
 	</build>
 

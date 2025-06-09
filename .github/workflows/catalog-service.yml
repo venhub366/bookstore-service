@@ -1,0 +1,31 @@
+name: Catalog services
+
+on:
+  push:
+    paths:
+    - catalog-service/**
+    branches:
+    - '**'
+
+jobs:
+  build:
+    name: Catalog-Build
+    runs-on: unbuntu-latest
+    env:
+      working-directory: ./catalog-service
+    defaults:
+      run:
+        working-directory: ${{env.working-directory}}
+      steps:
+        - uses: actions/checkout@v4
+
+        -name : Setup java 21
+         uses : actions/setup-java@v4
+         with :
+          java-version : '21'
+          distribution : 'temurin'
+          cache : 'maven'
+        
+        -name : Buid with maven
+         run  : ./mvnw -ntp verify
+
