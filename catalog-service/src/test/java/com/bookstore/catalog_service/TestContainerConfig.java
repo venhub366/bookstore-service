@@ -1,5 +1,6 @@
 package com.bookstore.catalog_service;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -13,5 +14,11 @@ public class TestContainerConfig {
   @ServiceConnection
   PostgreSQLContainer<?> postgresContainer() {
     return new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"));
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.from(CatalogServiceApplication::main)
+        .with(TestcontainersConfiguration.class)
+        .run(args);
   }
 }
